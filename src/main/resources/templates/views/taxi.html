@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{fragments/main_layout}">
+
+<head>
+<title>Liste Taxis</title>
+</head>
+
+<body>
+
+	<div layout:fragment="content">
+		<div th:if="${error == 1 }" class="alert alert-danger mt-1"
+			role="alert" th:text="${errText}"></div>
+		<h2>TAXIS</h2>
+		<button type="button" class="btn btn-primary nBtn">
+			<i class="fa fa-plus"></i>
+		</button>
+		<div>
+			<h3 style="text-align: center;"
+				th:if="${taxis == null || taxis.isEmpty()}">La liste des taxis
+				est vide</h3>
+			<div th:if="${taxis != null && !taxis.isEmpty()}">
+
+				<table class="display table table-bordered">
+					<thead>
+						<tr>
+							<th>ID</th>
+							<th>Immatriculation</th>
+							<th>Date service</th>
+							<th>Modifier</th>
+							<th>Supprimer</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="taxi : ${taxis}">
+							<td th:text="${taxi.id}"></td>
+							<td th:text="${taxi.immat}"></td>
+							<td th:text="${#dates.format(taxi.dateservice, 'dd-MM-yyyy')}"></td>
+							<td><a th:href="@{findOne/(id=${taxi.id})}"
+								class="btn btn-primary eBtn"><i class="fa fa-edit"></i></a></td>
+							<!--  <td><a th:href="@{edit/{id}(id=${taxi.id})}"><i
+									class="fa fa-edit"></i></a></td>-->
+							<td><a class="btn btn-danger sBtn"
+								th:href="@{delete/{id}(id=${taxi.id})}"><i
+									class="fa fa-trash"></i></a></td>
+
+						</tr>
+					</tbody>
+				</table>
+				<div>
+					<div>
+						<!-- directors pagination -->
+						<nav aria-label="Pagination" th:if="${taxis.totalPages gt 0}">
+							<ul class="pagination justify-content-center font-weight-bold">
+								<li class="page-item"
+									th:classappend="${taxis.number eq 0} ? 'disabled'"><a
+									class="page-link"
+									th:href="@{findAll?page={id}(id=${taxis.number lt 2 ? 1 : taxis.number})}"
+									aria-label="Previous" title="Page précédente"
+									data-toggle="tooltip"> <span aria-hidden="true">&laquo;</span>
+								</a></li>
+								<li class="page-item"
+									th:classappend="${i eq taxis.number + 1} ? 'active'"
+									th:each="i : ${#numbers.sequence( 1, taxis.totalPages, 1)}">
+									<a class="page-link" th:href="@{findAll?page={id}(id=${i})}"
+									th:text="${i}" th:title="${'Page '+ i}" data-toggle="tooltip"></a>
+								</li>
+								<li class="page-item"
+									th:classappend="${taxis.number + 1 eq taxis.totalPages} ? 'disabled'">
+									<a class="page-link"
+									th:href="@{findAll?page={id}(id=${taxis.number + 2})}"
+									aria-label="Next" title="Page suivante" data-toggle="tooltip">
+										<span aria-hidden="true">&raquo;</span>
+								</a>
+								</li>
+							</ul>
+						</nav>
+					</div>
+				</div>
+
+			</div>
+
+		</div>
+		<div class="myForm">
+			<form th:action="@{saveTaxi}" method="post">
+				<div class="modal fade" id="exampleModal" tabindex="-1"
+					role="dialog" aria-labelledby="exampleModalLabel"
+					aria-hidden="true">
+					<div class="modal-dialog" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h2 class="modal-title" style="text-align: center;"
+									id="exampleModalLabel">Insérer ou Modifier Taxi</h2>
+								<button type="button" class="close" data-dismiss="modal"
+									aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+							</div>
+							<div class="modal-body">
+
+								<div class="form-group">
+									<input type="hidden" class="form-control" id="id" name="id"
+										value="" />
+								</div>
+								<div class="form-group">
+									<label for="immat" class="col-form-label">IMMATRICULATION:</label>
+									<input type="text" class="form-control" id="immat" name="immat"
+										value="" />
+								</div>
+								<div class="form-group">
+									<label for="dateservice" class="col-form-label">DATE
+										SERVICE:</label> <input type="text" class="form-control"
+										id="dateservice" name="dateservice" value="" />
+								</div>
+
+
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-secondary"
+									data-dismiss="modal">Close</button>
+								<input type="submit" class="btn btn-primary" value="Ajouter" />
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</form>
+		</div>
+		<div class="modal fade" id="modalSupp" tabindex="-1" role="dialog"
+			aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLongTitle">Suppression</h5>
+						<button type="button" class="close" data-dismiss="modal"
+							aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<p class="alert alert-danger">Voulez-vous supprimer cette
+							ligne</p>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary"
+							data-dismiss="modal">Close</button>
+						<a href="" id="delRef" class="btn btn-danger">Supprimer</a>
+					</div>
+				</div>
+			</div>
+		</div>
+		<th:block layout:fragment="script">
+			<script type="text/javascript" th:src="@{/js/main.js}"
+				src="/js/main.js"></script>
+
+		</th:block>
+	</div>
+
+</body>
+
+</html>
