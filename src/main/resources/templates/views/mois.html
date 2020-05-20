@@ -25,7 +25,7 @@
 					<thead>
 						<tr>
 							<th>ID</th>
-							<th>Libellé</th>
+							<th>Libell&eacute;</th>
 							<th>Modifier</th>
 							<th>Supprimer</th>
 						</tr>
@@ -35,10 +35,10 @@
 							<td th:text="${m.id}"></td>
 							<td th:text="${m.libelle}"></td>
 							<td><a th:href="@{findOne/(id=${m.id})}"
-								class="btn btn-primary metBtn"><i class="fa fa-edit"></i></a></td>
+								class="btn btn-primary eBtn"><i class="fa fa-edit"></i></a></td>
 							<!--  <td><a th:href="@{edit/{id}(id=${taxi.id})}"><i
 									class="fa fa-edit"></i></a></td>-->
-							<td><a class="btn btn-danger mstBtn"
+							<td><a class="btn btn-danger sBtn"
 								th:href="@{delete/{id}(id=${m.id})}"><i
 									class="fa fa-trash"></i></a></td>
 
@@ -66,7 +66,7 @@
 								<li class="page-item"
 									th:classappend="${ms.number + 1 eq ms.totalPages} ? 'disabled'">
 									<a class="page-link"
-									th:href="@{findAll?page={id}(id=${tds.number + 2})}"
+									th:href="@{findAll?page={id}(id=${ms.number + 2})}"
 									aria-label="Next" title="Page suivante" data-toggle="tooltip">
 										<span aria-hidden="true">&raquo;</span>
 								</a>
@@ -88,7 +88,7 @@
 						<div class="modal-content">
 							<div class="modal-header">
 								<h2 class="modal-title" style="text-align: center;"
-									id="exampleModalLabel">Insérer ou Modifier Mois</h2>
+									id="exampleModalLabel">Ins&eacute;rer ou Modifier Mois</h2>
 								<button type="button" class="close" data-dismiss="modal"
 									aria-label="Close">
 									<span aria-hidden="true">&times;</span>
@@ -101,7 +101,7 @@
 										value="" />
 								</div>
 								<div class="form-group">
-									<label for="libelle" class="col-form-label">Libellé:</label>
+									<label for="libelle" class="col-form-label">Libell&eacute;:</label>
 									<input type="text" class="form-control" id="libelle" name="libelle"
 										value="" />
 								</div>
@@ -142,6 +142,11 @@
 				</div>
 			</div>
 		</div>
+		<th:block layout:fragment="script">
+			<script type="text/javascript" th:src="@{/js/mainMois.js}"
+				src="/js/mainMois.js"></script>
+
+		</th:block>
 	</div>
 
 </body>
